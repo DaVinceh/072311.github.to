@@ -2,6 +2,10 @@ fetch('https://www.reddit.com/r/news/top.json?limit=5&t=day')
   .then(response => response.json())
   .then(data => {
     const container = document.getElementById('socialData');
+
+    const titles = [];
+    const upvotes = [];
+
     let table = `
       <table class="min-w-full bg-gray-800 text-white border border-gray-600 rounded-lg overflow-hidden">
         <thead class="bg-gray-700">
@@ -17,6 +21,9 @@ fetch('https://www.reddit.com/r/news/top.json?limit=5&t=day')
 
     data.data.children.forEach(post => {
       const item = post.data;
+      titles.push(item.title.length > 30 ? item.title.slice(0, 30) + "…" : item.title);
+      upvotes.push(item.ups);
+
       table += `
         <tr class="border-t border-gray-600 hover:bg-gray-700">
           <td class="px-4 py-2">${item.title}</td>
@@ -31,6 +38,35 @@ fetch('https://www.reddit.com/r/news/top.json?limit=5&t=day')
 
     table += '</tbody></table>';
     container.innerHTML = table;
+
+    // Draw Chart
+    const ctx = document.getElementById('redditChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: titles,
+        datasets: [{
+          label: 'Upvotes',
+          data: upvotes,
+          backgroundColor: 'rgba(59, 130, 246, 0.6)',
+          borderColor: 'rgba(59, 130, 246, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: 'white' } }
+        },
+        scales: {
+          x: { ticks: { color: 'white' } },
+          y: {
+            ticks: { color: 'white' },
+            beginAtZero: true
+          }
+        }
+      }
+    });
   })
   .catch(error => {
     console.error('Error:', error);

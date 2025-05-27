@@ -5,6 +5,8 @@
   <title>Social Media Insights</title>
   <script src="js/social.js" defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body class="bg-gray-900 text-white p-6">
 
@@ -21,8 +23,11 @@
     </nav>
   </header>
 
+<h1 class="text-3xl font-bold mb-4">Top Reddit News (Today)</h1>
+<canvas id="redditChart" width="400" height="200" class="mb-6"></canvas>
+<div id="socialData" class="overflow-x-auto"></div>
+
   <!-- Content -->
-  <h1 class="text-3xl font-bold mb-4">Top Reddit News (Today)</h1>
   <div id="socialData" class="overflow-x-auto"></div>
 
 </body>
